@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Transporte</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="{% url 'home' %}" class="text-2xl font-bold tracking-tight">TransportOptim</a>
+            <div class="flex space-x-4">
+                <a href="{% url 'home' %}" class="hover:text-indigo-200 transition-colors">Inicio</a>
+                <a href="{% url 'transporte' %}" class="hover:text-indigo-200 transition-colors">Solver</a>
+                <a href="{% url 'add_comment' %}" class="hover:text-indigo-200 transition-colors">Comentarios</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-indigo-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2023 investigacion de Operaciones - Solución de Problemas de Transporte</p>
+        </div>
+    </footer>
+</body>
+</html>

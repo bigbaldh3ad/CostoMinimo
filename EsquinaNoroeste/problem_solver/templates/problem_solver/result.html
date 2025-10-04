@@ -1,0 +1,180 @@
+{% extends "problem_solver/base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Encabezado -->
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-indigo-800 mb-4">Solución del Problema de Transporte</h1>
+        <div class="{% if 'Costo Mínimo' in resultado %}bg-green-100 border-green-500{% else %}bg-indigo-100 border-indigo-500{% endif %} border-l-4 p-4 rounded-lg max-w-2xl mx-auto">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg class="h-6 w-6 {% if 'Costo Mínimo' in resultado %}text-green-600{% else %}text-indigo-600{% endif %}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-lg font-medium {% if 'Costo Mínimo' in resultado %}text-green-800{% else %}text-indigo-800{% endif %}">{{ resultado }}</p>
+                    <p class="text-sm {% if 'Costo Mínimo' in resultado %}text-green-600{% else %}text-indigo-600{% endif %} mt-1">
+                        {% if 'Costo Mínimo' in resultado %}
+                        Método que prioriza las rutas con menores costos
+                        {% else %}
+                        Método clásico que comienza desde la esquina superior izquierda
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MENSAJE DE BALANCEO -->
+    {% if balance_msg %}
+    <div class="p-4 mb-6 rounded bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 max-w-2xl mx-auto text-center">
+        {{ balance_msg }}
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-10 mb-12">
+        <!-- Tabla de asignaciones -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="{% if 'Costo Mínimo' in resultado %}bg-green-700{% else %}bg-indigo-700{% endif %} py-3 px-6">
+                <h2 class="text-xl font-bold text-white text-center">
+                    {% if 'Costo Mínimo' in resultado %}
+                    Asignación Óptima - Costo Mínimo
+                    {% else %}
+                    Asignación Óptima - Esquina Noroeste
+                    {% endif %}
+                </h2>
+            </div>
+            <div class="p-2 overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border">Origen</th>
+                            {% for j in destinos %}
+                                <th class="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider border">Destino {{ forloop.counter }}</th>
+                            {% endfor %}
+                            <th class="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider border">Oferta</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for fila in tabla_datos %}
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 border">{{ fila.nombre }}</td>
+                            {% for valor in fila.valores %}
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 text-center border">{{ valor }}</td>
+                            {% endfor %}
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 text-center border bg-gray-100">{{ fila.oferta }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="bg-gray-100 font-bold">
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 border">Demanda</td>
+                            {% for d in demanda %}
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 text-center border">{{ d }}</td>
+                            {% endfor %}
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 text-center border">{{ total_demanda }}/{{ total_oferta }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Gráfica -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="{% if 'Costo Mínimo' in resultado %}bg-green-700{% else %}bg-indigo-700{% endif %} py-3 px-6">
+                <h2 class="text-xl font-bold text-white text-center">Diagrama de Red de Transporte</h2>
+            </div>
+            <div class="p-6 flex flex-col items-center">
+                <img src="data:image/png;base64,{{ grafica }}" alt="Gráfico de red" class="max-w-full h-auto rounded-lg mb-6 shadow-md">
+                
+                <div class="w-full bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 text-center">Resumen de la Solución</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h4 class="font-medium text-gray-600 mb-1">Costo Total</h4>
+                            <p class="text-2xl font-bold {% if 'Costo Mínimo' in resultado %}text-green-600{% else %}text-indigo-600{% endif %}">{{ costo_total }}</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg shadow">
+                            <h4 class="font-medium text-gray-600 mb-1">Total Asignado</h4>
+                            <p class="text-2xl font-bold text-blue-600">{{ total_asignaciones }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔹 Desglose de Costos -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-12">
+        <div class="{% if 'Costo Mínimo' in resultado %}bg-green-700{% else %}bg-indigo-700{% endif %} py-3 px-6">
+            <h2 class="text-xl font-bold text-white text-center">Desglose de Costos</h2>
+        </div>
+        <div class="p-4 overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 border-collapse">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="px-4 py-2 border text-sm font-semibold text-gray-700">Origen</th>
+                        <th class="px-4 py-2 border text-sm font-semibold text-gray-700">Destino</th>
+                        <th class="px-4 py-2 border text-sm font-semibold text-gray-700">Cantidad</th>
+                        <th class="px-4 py-2 border text-sm font-semibold text-gray-700">Costo Unitario</th>
+                        <th class="px-4 py-2 border text-sm font-semibold text-gray-700">Contribución</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in desglose_costos %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-2 border text-center">{{ item.origen }}</td>
+                        <td class="px-4 py-2 border text-center">{{ item.destino }}</td>
+                        <td class="px-4 py-2 border text-center">{{ item.cantidad }}</td>
+                        <td class="px-4 py-2 border text-center">{{ item.costo_unitario }}</td>
+                        <td class="px-4 py-2 border text-center font-bold {% if 'Costo Mínimo' in resultado %}text-green-700{% else %}text-indigo-700{% endif %}">{{ item.contribucion }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="bg-gray-100 font-bold">
+                    <tr>
+                        <td colspan="4" class="px-4 py-2 border text-right">Costo Total</td>
+                        <td class="px-4 py-2 border text-center {% if 'Costo Mínimo' in resultado %}text-green-700{% else %}text-indigo-700{% endif %} text-lg">{{ costo_total }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- Botones de Navegación -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <a href="{% url 'home' %}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 inline-flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            Volver al Inicio
+        </a>
+        {% if 'Costo Mínimo' in resultado %}
+        <a href="{% url 'transporte' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 inline-flex items-center justify-center">
+            Probar Esquina Noroeste
+        </a>
+        {% else %}
+        <a href="{% url 'transporte_costo_minimo' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 inline-flex items-center justify-center">
+            Probar Costo Mínimo
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #d1d5db;
+        padding: 0.5rem;
+    }
+    th {
+        background-color: #f9fafb;
+        font-weight: 600;
+    }
+    tr:nth-child(even) {
+        background-color: #f9fafb;
+    }
+</style>
+{% endblock %}

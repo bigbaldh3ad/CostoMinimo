@@ -1,0 +1,128 @@
+{% extends "problem_solver/base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <!-- Hero Section -->
+    <section class="flex flex-col md:flex-row items-center justify-between py-12">
+        <div class="md:w-1/2 mb-10 md:mb-0">
+            <h1 class="text-5xl font-bold text-indigo-800 mb-6">Optimización de Problemas de Transporte</h1>
+            <p class="text-xl text-gray-700 mb-8">Resuelve eficientemente problemas de asignación de recursos utilizando diferentes métodos de optimización.</p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="{% url 'transporte' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center">
+                    Esquina Noroeste
+                </a>
+                <a href="{% url 'transporte_costo_minimo' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center">
+                    Costo Mínimo
+                </a>
+            </div>
+        </div>
+        <div class="md:w-1/2 flex justify-center">
+            <div class="relative w-64 h-64 md:w-80 md:h-80">
+                <div class="absolute inset-0 bg-indigo-200 rounded-xl shadow-lg transform rotate-6 animate-float"></div>
+                <div class="absolute inset-0 bg-green-200 rounded-xl shadow-lg transform -rotate-6 animate-float" style="animation-delay: 0.5s;"></div>
+                <div class="absolute inset-0 bg-indigo-400 rounded-xl shadow-lg transform rotate-3 animate-float" style="animation-delay: 1s;">
+                    <div class="flex items-center justify-center h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Métodos de Solución Section -->
+    <section class="py-16 bg-gray-50 rounded-xl my-12">
+        <h2 class="text-3xl font-bold text-center text-indigo-800 mb-12">Métodos de Solución Disponibles</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <!-- Método Esquina Noroeste -->
+            <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="bg-indigo-100 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-indigo-800">Método de la Esquina Noroeste</h3>
+                <p class="text-gray-600 mb-4">Algoritmo clásico que comienza desde la esquina superior izquierda y avanza sistemáticamente.</p>
+                <ul class="text-sm text-gray-600 mb-6 space-y-2">
+                    <li>• Simple y fácil de implementar</li>
+                    <li>• No considera costos inicialmente</li>
+                    <li>• Buena solución inicial</li>
+                </ul>
+                <a href="{% url 'transporte' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300 inline-flex items-center justify-center w-full">
+                    Usar Este Método
+                </a>
+            </div>
+            
+            <!-- Método Costo Mínimo -->
+            <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="bg-green-100 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-green-800">Método del Costo Mínimo</h3>
+                <p class="text-gray-600 mb-4">Algoritmo optimizado que prioriza las rutas con menores costos para encontrar soluciones más eficientes.</p>
+                <ul class="text-sm text-gray-600 mb-6 space-y-2">
+                    <li>• Considera costos desde el inicio</li>
+                    <li>• Suele dar mejores resultados</li>
+                    <li>• Más eficiente en costos</li>
+                </ul>
+                <a href="{% url 'transporte_costo_minimo' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300 inline-flex items-center justify-center w-full">
+                    Usar Este Método
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16">
+        <h2 class="text-3xl font-bold text-center text-indigo-800 mb-12">Características Principales</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                <div class="bg-indigo-100 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Interfaz Intuitiva</h3>
+                <p class="text-gray-600">Diseño moderno y fácil de usar que guía paso a paso en la resolución de problemas.</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                <div class="bg-indigo-100 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Múltiples Métodos</h3>
+                <p class="text-gray-600">Implementación de diferentes algoritmos para comparar y elegir la mejor solución.</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+                <div class="bg-indigo-100 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Visualización de Resultados</h3>
+                <p class="text-gray-600">Representación gráfica de la solución mediante tablas y diagramas de red.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 text-center">
+        <h2 class="text-3xl font-bold text-indigo-800 mb-6">¿Listo para optimizar tu problema de transporte?</h2>
+        <p class="text-xl text-gray-700 max-w-2xl mx-auto mb-8">Nuestra herramienta te ayuda a encontrar la solución óptima de manera rápida y eficiente.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'transporte' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center">
+                Probar Esquina Noroeste
+            </a>
+            <a href="{% url 'transporte_costo_minimo' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 inline-flex items-center">
+                Probar Costo Mínimo
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %}
